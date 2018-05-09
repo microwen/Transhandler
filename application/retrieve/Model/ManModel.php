@@ -21,48 +21,15 @@ class ManModel {
         return $rtn;
     }
 
-    public function get_all($min, $max) {
-        return array(
-            'e_baseinfo' => $this -> e_baseinfoA($min, $max),
-            'e_pb_baseinfo' => $this -> e_pb_baseinfoA($min, $max),
-            'e_pri_person' => $this -> e_pri_personA($min, $max),
-            'e_pb_opeartor' => $this -> e_pb_opeartorA($min, $max)
-            );
+    public function get_all($table, $min, $max) {
+        return $this -> oracle -> query("SELECT * FROM $table WHERE ROWNUM >= $min AND ROWNUM <= $max");
     }
 
-    public function e_baseinfoA($min, $max) {
-        return $this -> oracle -> query("SELECT * FROM E_BASEINFO WHERE ROWNUM >= $min AND ROWNUM <= $max");
+    public function get_update($table, $min, $max, $date) {
+        return $this -> oracle -> query("SELECT * FROM $table WHERE S_EXTDATETIME <= $date AND ROWNUM >= $min AND ROWNUM <= $max");
     }
 
-    public function e_pb_baseinfoA($min, $max) {
-        return $this -> oracle -> query("SELECT * FROM E_PB_BASEINFO WHERE ROWNUM >= $min AND ROWNUM <= $max");
-    }
-
-    public function e_pri_personA($min, $max) {
-        return $this -> oracle -> query("SELECT * FROM E_PRI_PERSON WHERE ROWNUM >= $min AND ROWNUM <= $max");
-    }
-
-    public function e_pb_opeartorA($min, $max) {
-        return $this -> oracle -> query("SELECT * FROM E_PB_OPERATOR WHERE ROWNUM >= $min AND ROWNUM <= $max");
-    }
-
-    public function get_update($date) {
-
-    }
-
-    public function e_baseinfoU() {
-
-    }
-
-    public function e_pb_baseinfoU() {
-
-    }
-
-    public function e_pri_personU() {
-
-    }
-
-    public function e_pb_opeartorU() {
-
+    public function get_row($row, $table) {
+        return $this -> oracle -> query("SELECT * FROM $table WHERE ROWNUM = $row");
     }
 }
