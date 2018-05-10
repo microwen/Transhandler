@@ -8,9 +8,11 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+use think\Route;
 Route::rule('retrieve', 'retrieve/Retrieve/index');
 return [
+    'url_route_on'  =>  true,
+
     '__pattern__' => [
         'name' => '\w+',
     ],

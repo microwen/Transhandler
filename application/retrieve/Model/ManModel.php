@@ -17,20 +17,16 @@ class ManModel {
      */
     public function __construct($username, $password, $dbname) {
         $this -> oracle = new OracleModel();
-        $rtn = $this -> oracle -> connect($username, $password, $dbname);
-        return $rtn;
+        $this -> oracle -> connect($username, $password, $dbname);
     }
 
     public function get_all($table, $min, $max) {
-        return $this -> oracle -> query("SELECT * FROM $table WHERE ROWNUM >= $min AND ROWNUM <= $max");
+        return $this -> oracle -> query("SELECT * FROM (SELECT rownum NUM, t.* FROM $table t ) WHERE NUM BETWEEN $min AND $max");
     }
 
     public function get_update($table, $min, $max, $date) {
-        return $this -> oracle -> query("SELECT * FROM $table WHERE S_EXTDATETIME <= $date AND ROWNUM >= $min AND ROWNUM <= $max");
-    }
-
-    public function get_row($row, $table) {
-        return $this -> oracle -> query("SELECT * FROM $table WHERE ROWNUM = $row");
+        //TODO need to be fixed
+        //return $this -> oracle -> query("SELECT * FROM (SELECT rownum NUM, t.* FROM $table t WHERE to_char(S_EXT_DATATIME, 'YYYY-MM-DD') = $date) WHERE NUM BETWEEN $min AND $max");
     }
 
     public function close_db() {

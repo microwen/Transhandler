@@ -29,6 +29,7 @@ class OracleModel {
         if(!$this->conn) {
             return false;
         } else {
+            oci_execute(oci_parse($this -> conn, "ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'"));
             return $this->conn;
         }
     }
@@ -52,9 +53,13 @@ class OracleModel {
      * @param int $type
      * @return array
      */
-    public function fetch_array($type=OCI_ASSOC) {
-        while( $row = oci_fetch_array($this->query,$type) ){
+    public function fetch_array() {
+        $rs = null;
+        while( $row = oci_fetch_array($this->query,OCI_ASSOC+OCI_RETURN_NULLS) ){
             $rs[] = $row;
+        }
+        if ($rs == null) {
+            return $rs;
         }
         if(1==count($rs)){
             $rs = $rs[0];

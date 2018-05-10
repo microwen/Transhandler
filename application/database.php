@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '123.207.244.100',
+    'hostname'        => '10.10.2.137',
     // 数据库名
-    'database'        => 'chatbot',
+    'database'        => 'common',
     // 用户名
-    'username'        => 'shuangxin_common',
+    'username'        => 'root',
     // 密码
-    'password'        => '*#SXCOMMON#*',
+    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

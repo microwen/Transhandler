@@ -8,9 +8,9 @@
 
 namespace app\retrieve\controller;
 
-use Thread;
 use app\retrieve\Model\MysqlModel;
-class SenderThread extends Thread
+
+class SenderThread extends \Thread
 {
     public function __construct($table, $content) {
         $this -> table = $table;
@@ -18,6 +18,11 @@ class SenderThread extends Thread
     }
 
     public function run() {
+        if (!strcmp("E_BASEINFO", $this -> table)) {
+            return MysqlModel::insert_data("E_BASEINFO_UP", $this -> content);
+        } elseif (!strcmp("E_PB_BASEINFO", $this -> table)) {
+
+        }
         return MysqlModel::insert_data($this -> table, $this -> content);
     }
 }
