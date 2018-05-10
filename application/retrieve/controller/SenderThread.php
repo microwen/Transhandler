@@ -9,15 +9,15 @@
 namespace app\retrieve\controller;
 
 use Thread;
+use app\retrieve\Model\MysqlModel;
 class SenderThread extends Thread
 {
-    public function __construct($table, $content, $date = null) {
+    public function __construct($table, $content) {
         $this -> table = $table;
         $this -> content = $content;
-        $this -> date = $date;
     }
 
     public function run() {
-        //TODO call send function
+        return MysqlModel::insert_data($this -> table, $this -> content);
     }
 }

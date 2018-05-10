@@ -9,15 +9,18 @@
 namespace app\retrieve\controller;
 
 use app\retrieve\Model\ManModel;
+
 class Retrieve
 {
     public function index($type, $date) {
         $manModel = new ManModel("root", "root", "localhost/dbname");
-        $tables = array("E_BASEINFO", "E_PB_BASEINFO", "E_PRI_PERSON", "E_PB_OPERATOR");
+        //Be award: Array order MATTERS! ↓
+        $tables = array("E_PRI_PERSON", "E_PB_OPERATOR", "E_BASEINFO_UP", "E_PB_BASEINFO_UP");
+        $rows_each_time = 1000;
         switch ($type) {
             case 'getall':
                 foreach ($tables as $t) {
-                    for ($min = 1, $max = 3000; $manModel -> get_row($max, $t); $min += 3000, $max += 3000) {
+                    for ($min = 1, $max = $rows_each_time; $manModel -> get_row($max, $t); $min += $rows_each_time, $max += $rows_each_time) {
                         $senderThread = new SenderThread($t, $manModel -> get_all($t, $min, $max));
                         $senderThread -> start();
                     }
@@ -25,7 +28,7 @@ class Retrieve
                 break;
             case 'getallupdate':
                 foreach ($tables as $t) {
-                    for ($min = 1, $max = 3000; $manModel -> get_row($max, $t); $min += 3000, $max += 3000) {
+                    for ($min = 1, $max = $rows_each_time; $manModel -> get_row($max, $t); $min += $rows_each_time, $max += $rows_each_time) {
                         $senderThread = new SenderThread($t, $manModel -> get_update($t, $min, $max, $date));
                         $senderThread -> start();
                     }
@@ -34,6 +37,7 @@ class Retrieve
             default:
                 return false;
         }
+        $manModel -> close_db();
         return true;
     }
 }

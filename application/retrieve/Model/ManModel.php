@@ -32,4 +32,8 @@ class ManModel {
     public function get_row($row, $table) {
         return $this -> oracle -> query("SELECT * FROM $table WHERE ROWNUM = $row");
     }
+
+    public function close_db() {
+        return $this -> oracle -> close();
+    }
 }
